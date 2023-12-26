@@ -1,0 +1,17 @@
+#!/bin/bash
+
+FILE=$(realpath "$0")
+ROOT=$(dirname $(dirname "${FILE}"))
+cd $ROOT
+source docker/config.sh
+
+IMAGE_NAME=$(get_image_name)
+
+echo $IMAGE_NAME
+
+if ! $(docker image inspect "$IMAGE_NAME" &> /dev/null);then
+    echo "Image is not exists ... "
+    ./docker/build.sh
+fi
+
+./docker/run.sh
